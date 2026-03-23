@@ -2,42 +2,89 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>AVVISO DI SICUREZZA - TRACCIAMENTO ATTIVO</title>
+    <title>C:\Windows\System32\cmd.exe</title>
     <style>
-        body { background: #050505; color: #ff0000; font-family: 'Courier New', monospace; text-align: center; padding: 50px; }
-        .box { border: 2px solid #ff0000; display: inline-block; padding: 30px; background: #1a0000; box-shadow: 0 0 20px #ff0000; max-width: 600px; }
-        .glitch { font-size: 22px; font-weight: bold; text-transform: uppercase; margin-bottom: 20px; }
-        .message { color: #ccc; text-align: left; line-height: 1.6; }
-        .highlight { color: #fff; background: #ff0000; padding: 0 5px; }
+        body { background-color: black; color: #aaaaaa; font-family: 'Consolas', 'Courier New', monospace; font-size: 14px; margin: 0; padding: 10px; height: 100vh; overflow: hidden; }
+        #cmd-window { width: 100%; height: 100%; position: relative; }
+        .prompt { color: #aaaaaa; }
+        .input-area { display: flex; align-items: center; }
+        #user-input { background: transparent; border: none; color: white; font-family: inherit; font-size: inherit; outline: none; width: 100%; padding-left: 5px; }
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+        
+        /* Stile per il Messaggio Rosso Finale */
+        #final-message { display: none; color: #ff3333; text-align: left; padding: 20px; line-height: 1.6; border: 1px solid #ff3333; box-shadow: 0 0 15px #aa0000; max-width: 600px; margin-top: 20px; }
+        .glitch { font-weight: bold; font-size: 1.2em; text-transform: uppercase; border-bottom: 1px solid #ff3333; padding-bottom: 5px; margin-bottom: 10px; }
+        .highlight { color: #ffffff; background-color: #aa0000; padding: 0 3px; }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <div class="glitch">UTENTE RILEVATO: FRANCESCO STABILE</div>
+<div id="cmd-window">
+    <div id="log">
+        Microsoft Windows [Versione 10.0.19045.3693]<br>
+        (c) Microsoft Corporation. Tutti i diritti riservati.<br><br>
+        
+        C:\Users\Admin> net session<br>
+        [!] RILEVATO TENTATIVO DI ACCESSO ESTERNO...<br>
+        [!] VERIFICA IDENTITÀ RICHIESTA.<br><br>
+        
+        <span class="prompt">Sei sicuro di voler accedere nel sistema protetto? [y/n]: </span>
+    </div>
     
-    <div class="message">
-        > <span class="highlight">LOG DI SISTEMA:</span> Tentativo di accesso tramite social rilevato.<br>
+    <div class="input-area" id="input-container">
+        <span class="prompt">C:\></span><input type="text" id="user-input" maxlength="1" autofocus>
+    </div>
+
+    <div id="final-message">
+        <div class="glitch">> UTENTE RILEVATO: FRANCESCO STABILE <</div>
+        > <span class="highlight">LOG DI SISTEMA:</span> Tentativo di intrusione tramite social rilevato.<br>
         > <span class="highlight">STATO:</span> Sotto osservazione.<br><br>
         
-        <strong>Messaggio per Francesco:</strong><br>
-        Sappiamo che passi il tempo a seguire fanpage per sentirti importante. <br>
-        Pensavi che muoverti nell'ombra ti rendesse invisibile? <br><br>
+        Pensavi che muoverti nell'ombra ti rendesse invisibile, Francesco?<br><br>
         
-        Mentre tu ti nascondi dietro un profilo, questo server ha già registrato:<br>
-        - Il tuo dispositivo: <span id="dev">Rilevamento...</span><br>
-        - La tua posizione approssimativa.<br>
-        - Il timestamp della tua visita.<br><br>
+        Mentre tu perdi tempo a seguire fanpage per farti notare,<br>
+        questo server ha già registrato la tua visita.<br><br>
         
-        <strong>"Francesco, non toccare ciò che non ti appartiene. Il codice vede tutto."</strong>
+        <strong>"Francesco Stabile, non toccare ciò che non ti appartiene. Il codice vede tutto."</strong><br><br>
+        C:\> _
     </div>
 </div>
 
 <script>
-    // Mostra il suo dispositivo per fargli capire che non è un gioco
-    setTimeout(() => {
-        document.getElementById('dev').innerHTML = navigator.platform + " (" + navigator.userAgent.split(' ')[0] + ")";
-    }, 1500);
+    const userInput = document.getElementById('user-input');
+    const log = document.getElementById('log');
+    const inputContainer = document.getElementById('input-container');
+    const finalMessage = document.getElementById('final-message');
+
+    // Mantiene il focus sull'input
+    userInput.addEventListener('blur', () => userInput.focus());
+
+    userInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            const val = userInput.value.toLowerCase().trim();
+            log.innerHTML += val + "<br>"; // Aggiunge la 'y' al log
+
+            if (val === 'y') {
+                log.innerHTML += "[+] ACCESSO CONFERMATO. CARICAMENTO DATI UTENTE...<br><br>";
+                
+                // Nascondiamo l'input e mostriamo il messaggio rosso dopo un breve ritardo scenico
+                inputContainer.style.display = 'none';
+                userInput.disabled = true;
+
+                setTimeout(() => {
+                    log.style.color = '#333333'; // Sbiadisce il log CMD
+                    finalMessage.style.display = 'block'; // Mostra il messaggio rosso
+                    document.body.style.boxShadow = "inset 0 0 50px #aa0000";
+                }, 1500);
+
+            } else {
+                log.innerHTML += "[-] ACCESSO NEGATO.<br>C:\>_";
+                inputContainer.style.display = 'none';
+                userInput.disabled = true;
+            }
+        }
+    });
 </script>
 
 </body>
