@@ -2,54 +2,53 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>PROJECT NEMESIS OS - SYSTEM ACCESS</title>
+    <title>PROJECT NEMESIS OS - IDENTIFICATION</title>
     <style>
         body { background: #000; color: #0f0; font-family: 'Courier New', monospace; margin: 0; padding: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
         
-        /* Schermata Iniziale: Serve per ottenere il permesso webcam */
-        #splash-screen { text-align: center; cursor: pointer; }
-        #splash-screen .btn { border: 2px solid #0f0; padding: 10px 20px; font-weight: bold; background: transparent; color: #0f0; text-transform: uppercase; cursor: pointer; }
+        /* 1. Schermata Iniziale */
+        #splash-screen { text-align: center; color: #aaaaaa; font-size: 14px; }
+        .btn { border: 2px solid #0f0; padding: 10px 20px; font-weight: bold; background: transparent; color: #0f0; text-transform: uppercase; cursor: pointer; margin-top: 20px; font-family: inherit; }
+        .btn:hover { background: #003300; }
 
-        /* Desktop */
+        /* 2. Desktop */
         #desktop { display: none; width: 100vw; height: 100vh; background: radial-gradient(circle, #001a00 0%, #000 100%); position: relative; }
         
-        /* Terminale */
-        .terminal { position: absolute; top: 10%; left: 10%; width: 40%; height: 60%; background: #080808; border: 1px solid #111; padding: 10px; font-size: 12px; line-height: 1.2; overflow: hidden; }
+        .terminal { position: absolute; top: 10%; left: 5%; width: 45%; height: 70%; background: #080808; border: 1px solid #111; padding: 15px; font-size: 12px; line-height: 1.3; overflow: hidden; }
         
-        /* ID Card (La tua immagine) */
-        .id-card { position: absolute; top: 25%; right: 10%; width: 400px; background: #0a0a0a; border: 2px solid #111; box-shadow: 0 0 15px #111; display: none; }
-        .id-card-title { background: #111; color: #fff; text-align: center; padding: 5px; font-weight: bold; border-bottom: 2px solid red; text-transform: uppercase; }
-        .id-card-content { padding: 15px; }
-        .profile-photo { width: 100px; height: 120px; background: #111; border: 1px solid #333; float: left; margin-right: 15px; position: relative; overflow: hidden; }
-        .profile-photo video, .profile-photo canvas { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) sepia(1) saturate(3) hue-rotate(90deg); }
-        .captured-stamp { position: absolute; bottom: 5px; right: 5px; color: red; background: rgba(0,0,0,0.7); font-size: 10px; border: 1px solid red; padding: 2px; text-transform: uppercase; font-weight: bold; }
-        .details-list { float: left; width: calc(100% - 115px); font-size: 11px; line-height: 1.4; }
-        .details-list div { margin-bottom: 5px; }
+        /* Carta ID */
+        .id-card { position: absolute; top: 20%; right: 5%; width: 420px; background: #0a0a0a; border: 2px solid #111; box-shadow: 0 0 20px #0a0a0a; display: none; }
+        .id-card-title { background: #111; color: #fff; text-align: center; padding: 8px; font-weight: bold; border-bottom: 2px solid red; text-transform: uppercase; }
+        .id-card-content { padding: 20px; }
+        
+        /* Box Foto: Qui il video sparisce e appare il canvas (foto fissa) */
+        .profile-photo { width: 110px; height: 130px; background: #000; border: 1px solid #333; float: left; margin-right: 20px; position: relative; overflow: hidden; }
+        #webcam { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) sepia(1) saturate(4) hue-rotate(90deg); transform: scaleX(-1); }
+        #photo-canvas { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) sepia(1) saturate(4) hue-rotate(90deg); transform: scaleX(-1); display: none; }
+        
+        .captured-stamp { position: absolute; bottom: 5px; right: 5px; color: red; background: rgba(0,0,0,0.8); font-size: 10px; border: 1px solid red; padding: 3px; text-transform: uppercase; font-weight: bold; }
+        
+        .details-list { float: left; width: calc(100% - 130px); font-size: 12px; line-height: 1.5; color: #ccc; }
         .red-text { color: red; font-weight: bold; }
-        .white-text { color: #fff; background-color: #aa0000; padding: 0 3px; }
-        .warning-bar { background: red; color: white; text-align: center; padding: 5px; font-size: 11px; font-weight: bold; text-transform: uppercase; clear: both; margin-top: 15px; }
+        .white-text-bg { color: #ffffff; background-color: #aa0000; padding: 1px 4px; font-weight: bold; }
+        .warning-bar { background: red; color: white; text-align: center; padding: 8px; font-size: 12px; font-weight: bold; text-transform: uppercase; clear: both; margin-top: 20px; width: 100%; box-sizing: border-box; }
         
-        /* Allarme */
-        #alert-win { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: red; text-align: center; font-size: 20px; font-weight: bold; z-index: 100; text-shadow: 0 0 10px red; }
+        #alert-win { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: red; text-align: center; font-size: 24px; font-weight: bold; z-index: 100; text-shadow: 0 0 15px red; background: rgba(0,0,0,0.9); padding: 20px; border: 2px solid red; }
     </style>
 </head>
 <body>
 
 <div id="splash-screen">
-    Microsoft Windows [Versione 10.0.19045.3693]<br>
-    (c) Microsoft Corporation. Tutti i diritti riservati.<br><br>
-    [!] RILEVATO TENTATIVO DI ACCESSO ESTERNO...<br><br>
-    <button class="btn" onclick="startPrank()">VERIFICA IDENTITÀ</button>
+    [SISTEMA DI IDENTIFICAZIONE REMOTA]<br>
+    RILEVATO TENTATIVO DI ACCESSO DA PARTE DI: FRANCESCO STABILE<br><br>
+    <button class="btn" onclick="startPrank()">ACCETTA E IDENTIFICA</button>
 </div>
 
 <div id="desktop">
-    <div class="terminal">
-        > Caricamento Kernel Nemesis OS v4.0.2... OK<br>
-        > Rilevamento hardware... OK<br>
-        > Scansione utenti non autorizzati... OK<br>
-        > <span class="red-text">[!] TARGET RILEVATO: Francesco Stabile (ID: CRUSH/NEMICO)</span><br>
-        > Attivazione modulo webcam per identificazione visiva... OK<br>
-        > Acquisizione immagine in corso... _
+    <div class="terminal" id="terminal-body">
+        > Caricamento protocolli... [OK]<br>
+        > <span class="red-text">[!] TARGET: FRANCESCO STABILE</span><br>
+        > Attivazione webcam per cattura immagine...<br>
     </div>
     
     <div id="id-card" class="id-card">
@@ -57,80 +56,77 @@
         <div class="id-card-content">
             <div class="profile-photo">
                 <video id="webcam" autoplay muted playsinline></video>
-                <canvas id="canvas" style="display:none;"></canvas>
-                <div class="captured-stamp">CAPTURED VIA WEBCAM</div>
+                <canvas id="photo-canvas"></canvas>
+                <div class="captured-stamp">DATA CAPTURED</div>
             </div>
             <div class="details-list">
                 <div><strong>NOME:</strong> Francesco Stabile</div>
-                <div><strong>STATO:</strong> <span class="red-text">SOTTO OSSERVAZIONE - LIVELLO 3</span></div>
-                <div><strong>RATING OSSESSIONE FANPAGE:</strong> 98% (CRITICO)</div>
-                <div><strong>MEMBRO DEL TEAM:</strong> <span class="white-text">CRUSH/NEMICO</span></div>
-                <div><strong>RISCHIO:</strong> ALTO</div>
+                <div><strong>STATO:</strong> <span class="red-text">SOTTO OSSERVAZIONE</span></div>
+                <div><strong>RATING:</strong> 98% (CRITICO)</div>
+                <div><strong>TEAM:</strong> <span class="white-text-bg">CRUSH/NEMICO</span></div>
                 <div><strong>DISPOSITIVO:</strong> <span id="dev">Rilevamento...</span></div>
-                <div><strong>ULTIMA VISITA:</strong> <span id="time">Rilevamento...</span></div>
             </div>
             <div class="warning-bar">[!] WARNING: NON TOCCARE CIÒ CHE NON TI APPARTIENE.</div>
         </div>
     </div>
 </div>
 
-<div id="alert-win">!!! INTRUSO IDENTIFICATO !!!</div>
-
-<audio id="beep" src="https://www.soundjay.com/buttons/sounds/button-37a.mp3"></audio>
+<div id="alert-win">IDENTIFICAZIONE COMPLETATA.<br>LOG ARCHIVIATO CON SUCCESSO.</div>
 
 <script>
-    // Configurazione dei parametri
-    document.getElementById('dev').innerHTML = navigator.platform + " (" + navigator.userAgent.split(' ')[0] + ")";
-    document.getElementById('time').innerHTML = new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' }) + " CET";
-
     const video = document.getElementById('webcam');
-    const canvas = document.getElementById('canvas');
-    const splashScreen = document.getElementById('splash-screen');
-    const desktop = document.getElementById('desktop');
-    const idCard = document.getElementById('id-card');
-    const alertWin = document.getElementById('alert-win');
-    const beep = document.getElementById('beep');
+    const canvas = document.getElementById('photo-canvas');
+    const terminal = document.getElementById('terminal-body');
 
     function startPrank() {
-        // Nasconde lo splash screen e mostra il desktop
-        splashScreen.style.display = 'none';
-        desktop.style.display = 'block';
-        
-        // Chiede il permesso per la webcam
+        document.getElementById('splash-screen').style.display = 'none';
+        document.getElementById('desktop').style.display = 'block';
+        document.getElementById('dev').innerHTML = navigator.platform;
+
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-            .then(function(stream) {
-                // Collega il flusso video all'elemento <video>
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
                 video.srcObject = stream;
                 
-                // Dopo 3 secondi, scatta la foto e mostra la carta ID
+                // 1. Aspetta 2 secondi per far sì che lui si veda nel video
                 setTimeout(() => {
-                    idCard.style.display = 'block';
-                    beep.play();
+                    terminal.innerHTML += "> Acquisizione immagine in corso... [3...]<br>";
+                }, 1000);
+                setTimeout(() => {
+                    terminal.innerHTML += "> Acquisizione immagine in corso... [1...]<br>";
+                }, 2000);
+
+                // 2. SCATTO: Blocca l'immagine
+                setTimeout(() => {
+                    takeSnapshot();
+                    terminal.innerHTML += "> <span style='color:white;'>[OK] IMMAGINE CATTURATA E SALVATA.</span><br>";
+                    document.getElementById('id-card').style.display = 'block';
                 }, 3000);
 
-                // Mostra l'allarme finale dopo 5 secondi
+                // 3. Allarme finale
                 setTimeout(() => {
-                    alertWin.style.display = 'block';
-                    document.body.style.animation = "shake 0.5s infinite";
-                    beep.play();
+                    document.getElementById('alert-win').style.display = 'block';
                 }, 5000);
-            })
-            .catch(function(error) {
-                console.log("Webcam access denied.");
-                // Se rifiuta la webcam, mostra comunque l'allarme e la carta con un'immagine nera
-                setTimeout(() => {
-                    idCard.style.display = 'block';
-                    document.getElementById('webcam').outerHTML = "<div style='color:red; font-size:10px; padding:20px;'>WEBCAM ACCESS DENIED</div>";
-                }, 3000);
             });
         }
     }
 
-    // Effetto vibrazione (shake)
-    const style = document.createElement('style');
-    style.innerHTML = "@keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }";
-    document.head.appendChild(style);
+    function takeSnapshot() {
+        const context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        // Disegna il frame corrente del video sul canvas
+        context.translate(canvas.width, 0);
+        context.scale(-1, 1); // Specchia per mantenere la coerenza
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        // Nasconde il video e mostra il canvas (la foto ferma)
+        video.style.display = 'none';
+        canvas.style.display = 'block';
+        
+        // Spegne la webcam (opzionale, per far sparire la luce verde della camera)
+        let tracks = video.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+    }
 </script>
 
 </body>
