@@ -1,39 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <title>SISTEMA DI SICUREZZA - ACCESSO NEGATO</title>
+    <meta charset="UTF-8">
+    <title>AVVISO DI SICUREZZA - TRACCIAMENTO ATTIVO</title>
     <style>
-        body { background: black; color: #0f0; font-family: 'Courier New', monospace; text-align: center; padding-top: 50px; }
-        .warning { color: red; font-weight: bold; font-size: 24px; animation: blink 0.5s infinite; }
-        @keyframes blink { 0% { opacity: 0; } 100% { opacity: 1; } }
-        .info { border: 1px solid #0f0; display: inline-block; padding: 20px; margin-top: 20px; text-align: left; }
+        body { background: #050505; color: #ff0000; font-family: 'Courier New', monospace; text-align: center; padding: 50px; }
+        .box { border: 2px solid #ff0000; display: inline-block; padding: 30px; background: #1a0000; box-shadow: 0 0 20px #ff0000; max-width: 600px; }
+        .glitch { font-size: 22px; font-weight: bold; text-transform: uppercase; margin-bottom: 20px; }
+        .message { color: #ccc; text-align: left; line-height: 1.6; }
+        .highlight { color: #fff; background: #ff0000; padding: 0 5px; }
     </style>
 </head>
 <body>
 
-    <div class="warning">ATTENZIONE: ACCESSO NON AUTORIZZATO</div>
-    <p>Tentativo di intrusione rilevato da parte di: <strong>FRANCESCO STABILE</strong></p>
+<div class="box">
+    <div class="glitch">UTENTE RILEVATO: FRANCESCO STABILE</div>
     
-    <div class="info" id="data-box">
-        > ANALISI DISPOSITIVO IN CORSO...<br>
-        <span id="details"></span>
-    </div>
-
-    <script>
-        // Questo script legge i dati del browser di Francesco e glieli sbatte in faccia
-        const details = document.getElementById('details');
+    <div class="message">
+        > <span class="highlight">LOG DI SISTEMA:</span> Tentativo di accesso tramite social rilevato.<br>
+        > <span class="highlight">STATO:</span> Sotto osservazione.<br><br>
         
-        setTimeout(() => {
-            details.innerHTML += "> IP RILEVATO: 192.***.***.** (Localizzato)<br>";
-        }, 1000);
+        <strong>Messaggio per Francesco:</strong><br>
+        Sappiamo che passi il tempo a seguire fanpage per sentirti importante. <br>
+        Pensavi che muoverti nell'ombra ti rendesse invisibile? <br><br>
+        
+        Mentre tu ti nascondi dietro un profilo, questo server ha già registrato:<br>
+        - Il tuo dispositivo: <span id="dev">Rilevamento...</span><br>
+        - La tua posizione approssimativa.<br>
+        - Il timestamp della tua visita.<br><br>
+        
+        <strong>"Francesco, non toccare ciò che non ti appartiene. Il codice vede tutto."</strong>
+    </div>
+</div>
 
-        setTimeout(() => {
-            details.innerHTML += "> DISPOSITIVO: " + navigator.platform + "<br>";
-            details.innerHTML += "> BROWSER: " + navigator.userAgent.split(' ')[0] + "<br>";
-            details.innerHTML += "> ORA LOCALE: " + new Date().toLocaleTimeString() + "<br>";
-            details.innerHTML += "<br><strong style='color:red'>> LOG INVIATO AL SERVER DI MIKE.</strong>";
-            document.body.style.boxShadow = "inset 0 0 100px red";
-        }, 2500);
-    </script>
+<script>
+    // Mostra il suo dispositivo per fargli capire che non è un gioco
+    setTimeout(() => {
+        document.getElementById('dev').innerHTML = navigator.platform + " (" + navigator.userAgent.split(' ')[0] + ")";
+    }, 1500);
+</script>
+
 </body>
 </html>
