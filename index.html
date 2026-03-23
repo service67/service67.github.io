@@ -2,89 +2,80 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>C:\Windows\System32\cmd.exe</title>
+    <title>Terminal Boot Sequence</title>
     <style>
-        body { background-color: black; color: #aaaaaa; font-family: 'Consolas', 'Courier New', monospace; font-size: 14px; margin: 0; padding: 10px; height: 100vh; overflow: hidden; }
-        #cmd-window { width: 100%; height: 100%; position: relative; }
-        .prompt { color: #aaaaaa; }
-        .input-area { display: flex; align-items: center; }
-        #user-input { background: transparent; border: none; color: white; font-family: inherit; font-size: inherit; outline: none; width: 100%; padding-left: 5px; }
+        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; margin: 0; padding: 20px; overflow: hidden; }
+        #boot-screen { font-size: 14px; line-height: 1.2; }
+        .red { color: #ff0000; font-weight: bold; }
+        .white { color: #fff; }
+        
+        /* Desktop finto (nascosto all'inizio) */
+        #desktop { display: none; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; background: radial-gradient(circle, #001a00 0%, #000 100%); }
+        .window { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; max-width: 600px; background: #111; border: 2px solid red; box-shadow: 0 0 30px red; padding: 20px; text-align: center; }
         .blink { animation: blinker 1s linear infinite; }
         @keyframes blinker { 50% { opacity: 0; } }
-        
-        /* Stile per il Messaggio Rosso Finale */
-        #final-message { display: none; color: #ff3333; text-align: left; padding: 20px; line-height: 1.6; border: 1px solid #ff3333; box-shadow: 0 0 15px #aa0000; max-width: 600px; margin-top: 20px; }
-        .glitch { font-weight: bold; font-size: 1.2em; text-transform: uppercase; border-bottom: 1px solid #ff3333; padding-bottom: 5px; margin-bottom: 10px; }
-        .highlight { color: #ffffff; background-color: #aa0000; padding: 0 3px; }
     </style>
 </head>
 <body>
 
-<div id="cmd-window">
-    <div id="log">
-        Microsoft Windows [Versione 10.0.19045.3693]<br>
-        (c) Microsoft Corporation. Tutti i diritti riservati.<br><br>
-        
-        C:\Users\Admin> net session<br>
-        [!] RILEVATO TENTATIVO DI ACCESSO ESTERNO...<br>
-        [!] VERIFICA IDENTITÀ RICHIESTA.<br><br>
-        
-        <span class="prompt">Sei sicuro di voler accedere nel sistema protetto? [y/n]: </span>
-    </div>
-    
-    <div class="input-area" id="input-container">
-        <span class="prompt">C:\></span><input type="text" id="user-input" maxlength="1" autofocus>
-    </div>
+<div id="boot-screen"></div>
 
-    <div id="final-message">
-        <div class="glitch">> UTENTE RILEVATO: FRANCESCO STABILE <</div>
-        > <span class="highlight">LOG DI SISTEMA:</span> Tentativo di intrusione tramite social rilevato.<br>
-        > <span class="highlight">STATO:</span> Sotto osservazione.<br><br>
-        
-        Pensavi che muoverti nell'ombra ti rendesse invisibile, Francesco?<br><br>
-        
-        Mentre tu perdi tempo a seguire fanpage per farti notare,<br>
-        questo server ha già registrato la tua visita.<br><br>
-        
-        <strong>"Francesco Stabile, non toccare ciò che non ti appartiene. Il codice vede tutto."</strong><br><br>
-        C:\> _
+<div id="desktop">
+    <div class="window">
+        <h1 class="red">!!! INTRUDER ALERT !!!</h1>
+        <p class="white">ID UTENTE IDENTIFICATO: <span class="red">FRANCESCO STABILE</span></p>
+        <hr border="1" color="red">
+        <p style="color: #ccc; text-align: left;">
+            > Analisi comportamento social completata.<br>
+            > <span class="red">Rilevato:</span> Ossessione per fanpage non autorizzate.<br><br>
+            <strong>Francesco, il codice non dimentica.</strong><br>
+            Mentre spii nell'ombra, il sistema ti sta guardando in faccia.<br><br>
+            <span class="white" style="background: red; padding: 5px;">NON TOCCARE CIÒ CHE NON TI APPARTIENE.</span>
+        </p>
     </div>
 </div>
 
 <script>
-    const userInput = document.getElementById('user-input');
-    const log = document.getElementById('log');
-    const inputContainer = document.getElementById('input-container');
-    const finalMessage = document.getElementById('final-message');
+    const bootLines = [
+        "ROM BIOS Version 4.0.2",
+        "Copyright (C) 1998-2026, Nemesis Corp.",
+        "CPU: Intel(R) Core(TM) i9-14900K @ 6.00GHz",
+        "Memory Test: 65536KB OK",
+        "",
+        "Initializing Storage Devices...",
+        "Detecting HDD... [OK]",
+        "Detecting Network... [CONNECTED]",
+        "Searching for unauthorized users...",
+        "Searching...",
+        "Searching...",
+        "<span class='red'>[!] TARGET FOUND: FRANCESCO_STABILE.exe</span>",
+        "Dumping memory address: 0x0045F2...",
+        "Injecting tracker payload...",
+        "Loading OS Kernel...",
+        "READY."
+    ];
 
-    // Mantiene il focus sull'input
-    userInput.addEventListener('blur', () => userInput.focus());
+    const bootScreen = document.getElementById('boot-screen');
 
-    userInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            const val = userInput.value.toLowerCase().trim();
-            log.innerHTML += val + "<br>"; // Aggiunge la 'y' al log
-
-            if (val === 'y') {
-                log.innerHTML += "[+] ACCESSO CONFERMATO. CARICAMENTO DATI UTENTE...<br><br>";
-                
-                // Nascondiamo l'input e mostriamo il messaggio rosso dopo un breve ritardo scenico
-                inputContainer.style.display = 'none';
-                userInput.disabled = true;
-
-                setTimeout(() => {
-                    log.style.color = '#333333'; // Sbiadisce il log CMD
-                    finalMessage.style.display = 'block'; // Mostra il messaggio rosso
-                    document.body.style.boxShadow = "inset 0 0 50px #aa0000";
-                }, 1500);
-
-            } else {
-                log.innerHTML += "[-] ACCESSO NEGATO.<br>C:\>_";
-                inputContainer.style.display = 'none';
-                userInput.disabled = true;
-            }
+    async function runBoot() {
+        for (let line of bootLines) {
+            let p = document.createElement('div');
+            p.innerHTML = line;
+            bootScreen.appendChild(p);
+            // Scrolla in basso automaticamente
+            window.scrollTo(0, document.body.scrollHeight);
+            // Ritardo casuale per sembrare vero
+            await new Promise(resolve => setTimeout(resolve, Math.random() * 400 + 100));
         }
-    });
+
+        setTimeout(() => {
+            bootScreen.style.display = 'none';
+            document.getElementById('desktop').style.display = 'block';
+            document.body.style.background = "black";
+        }, 1000);
+    }
+
+    window.onload = runBoot;
 </script>
 
 </body>
